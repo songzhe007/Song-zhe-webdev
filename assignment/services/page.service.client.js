@@ -1,5 +1,5 @@
 /**
- * Created by SongZheDerrick on 2017/6/16.
+ * Created by ChangLiu on 6/17/17.
  */
 (function () {
     angular
@@ -8,18 +8,19 @@
 
     function PageService() {
         var pages = [
-            { _id: "321", name: "Post 1", websiteId: "456", description: "Lorem" },
-            { _id: "432", name: "Post 2", websiteId: "456", description: "Lorem" },
-            { _id: "543", name: "Post 3", websiteId: "456", description: "Lorem" }
+            {_id: "321", name: "Post 1", websiteId: "456", description: "Lorem"},
+            {_id: "432", name: "Post 2", websiteId: "456", description: "Lorem"},
+            {_id: "543", name: "Post 3", websiteId: "456", description: "Lorem"}
         ];
 
         var services = {
-            'createPage': createPage,
-            'findPageByWebsiteId': findPageByWebsiteId,
-            'findPageById': findPageById,
-            'updatePage': updatePage,
-            'deletePage': deletePage,
+            "createPage": createPage,
+            "findPageByWebsiteId": findPageByWebsiteId,
+            "findPageById": findPageById,
+            "updatePage": updatePage,
+            "deletePage": deletePage
         };
+
         return services;
 
         function getNextId() {
@@ -40,29 +41,26 @@
             var newPage = {
                 _id: newPageId,
                 name: page.name,
-                description: page.description,
-                websiteId: websiteId
+                websiteId: websiteId,
+                description: page.description
             };
             pages.push(newPage);
-
-
         }
 
-
         function findPageByWebsiteId(websiteId) {
-            result = [];
-            for (w in pages) {
-                var page = pages[w];
+            var results = [];
+            for (p in pages) {
+                var page = pages[p];
                 if (parseInt(page.websiteId) === parseInt(websiteId)) {
-                    result.push(page);
+                    results.push(page);
                 }
             }
-            return result;
+            return results;
         }
 
         function findPageById(pageId) {
-            for (w in pages) {
-                var page = pages[w];
+            for (p in pages) {
+                var page = pages[p];
                 if (parseInt(page._id) === parseInt(pageId)) {
                     return page;
                 }
@@ -82,6 +80,5 @@
             var index = pages.indexOf(oldPage);
             pages.splice(index, 1);
         }
-
     }
 })();

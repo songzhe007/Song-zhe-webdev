@@ -1,0 +1,20 @@
+<form>
+    <div class="form-group">
+        <label for="youtube-name">Name</label>
+        <input ng-model="model.widgetName"
+               type="text" class="form-control" id="youtube-name" placeholder="Name"></div>
+    <div class="form-group">
+        <label for="youtube-text">Text</label>
+        <input ng-model="model.widgetText"
+               type="text" class="form-control" id="youtube-text" placeholder="Text"></div>
+    <div class="form-group">
+        <label for="youtube-URL">URL</label>
+        <input ng-model="model.widgetUrl"
+               type="text" class="form-control" id="youtube-URL" placeholder="URL"></div>
+    <div class="form-group">
+        <label for="youtube-width">Width</label>
+        <input ng-model="model.widgetWidth"
+               type="text" class="form-control" id="youtube-width" placeholder="100%"></div>
+</form>
+<a class="btn btn-danger btn-block" ng-click="model.deleteWidget()">Delete</a>
+

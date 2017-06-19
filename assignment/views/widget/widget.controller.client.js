@@ -1,20 +1,33 @@
 /**
- * Created by SongZheDerrick on 2017/6/18.
+ * Created by ChangLiu on 6/17/17.
  */
 (function () {
     angular
         .module("WebAppMaker")
-        .controller("WidgetListController", WidgetListController)
-        .controller("NewWidgetController", NewWidgetController)
-        .controller("CreateWidgetController", CreateWidgetController)
-        .controller("EditWidgetController", EditWidgetController);
+            .controller("WidgetListController", WidgetListController)
+            .controller("NewWidgetController", NewWidgetController)
+            .controller("CreateWidgetController", CreateWidgetController)
+            .controller("EditWidgetController", EditWidgetController);
 
-    function WidgetListController($routeParams, WidgetService) {
+    function WidgetListController($routeParams, WidgetService, $sce) {
         var vm = this;
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
         vm.widgets = WidgetService.findWidgetsByPageId(vm.pid);
+        vm.trust = trust;
+        vm.getYoutubeEmbedUrl = getYoutubeEmbedUrl;
+
+        function trust(html) {
+            return $sce.trustAsHtml(html);
+        }
+
+        function getYoutubeEmbedUrl(linkUrl) {
+            var embedUrl = "https://www.youtube.com/embed/";
+            var linkUrlParts = linkUrl.split('/');
+            embedUrl += linkUrlParts[linkUrlParts.length - 1];
+            return $sce.trustAsResourceUrl(embedUrl);
+        }
     }
 
     function NewWidgetController($routeParams, $timeout, WidgetService) {
@@ -43,7 +56,7 @@
                     return;
                 }
             }
-            if (vm.widgetType === 'HEADER') {
+            if (vm.widgetType === 'HEADING') {
                 if (vm.widgetText === null || vm.widgetText === undefined) {
                     vm.createError = "Text is required for Header";
                     return;
@@ -57,6 +70,10 @@
                 width: vm.widgetWidth,
                 url: vm.widgetUrl
             };
+            if (newWidget === null || newWidget === undefined) {
+                vm.createError = "no new widget";
+                return;
+            }
             WidgetService.createWidget(vm.pid, newWidget);
             $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
         }
@@ -72,7 +89,7 @@
         vm.editWidget = editWidget;
         vm.deleteWidget = deleteWidget;
 
-        if (vm.widget.widgetType === "HEADER") {
+        if (vm.widget.widgetType === "HEADING") {
             vm.widgetName = vm.widget.name;
             vm.widgetText = vm.widget.text;
             vm.widgetSize = vm.widget.size;
@@ -108,3 +125,9 @@
 
     }
 })();
+
+
+
+
+
+

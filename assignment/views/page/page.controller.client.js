@@ -8,40 +8,68 @@
         .controller("NewPageController", NewPageController)
         .controller("EditPageController", EditPageController)
 
-   function PageListController($routeParams, PageService, WebService){
+   function PageListController($routeParams, PageService){
        var vm = this;
        vm.uid = $routeParams.uid;
-       vm.websiteId = $routeParams.websiteId;
-       vm.pageId = $routeParams.pageId;
-       vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
-       vm.pages = PageService.findPageById(pageId);
+       vm.wid = $routeParams.wid;
+       vm.pid = $routeParams.pid;
+
+       vm.pages = PageService.findPageByWebsiteId(vm.wid);
+
 
 
    }
    function NewPageController($routeParams, PageService){
        var vm = this;
-       vm.websiteId = $routeParams.websiteId;
-       vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
+       vm.uid = $routeParams.uid;
+       vm.wid = $routeParams.wid;
+       vm.newPage = newPage;
+
        vm.name = $routeParams.name;
        vm.description = $routeParams.description;
-       vm. createPage = createPage;
-       function createPage(){
-           PageService.createPage(vm.websiteId,page);
+
+
+       function newPage(name, description) {
+           var page = {
+               name: name,
+               description: description
+           }
+           PageService.createPage(vm.wid, page);
+           $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page");
+       }
+
+
+
+   }
+
+   function EditPageController($routeParams, PageService){
+       var vm = this;
+
+       vm.uid = $routeParams.uid;
+       vm.wid = $routeParams.wid;
+       vm.pid = $routeParams.pid;
+       vm.deletePage = deletePage;
+       vm.updatePage = updatePage;
+
+       function updatePage(){
+
+           var page = {
+               name: name,
+               description: description
+           }
+           PageService.updatePage(vm.pid, page);
+           $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page");
+
+
+       }
+       function deletePage() {
+           PageService.deletePage(vm.pid);
+           $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page");
        }
 
    }
-   function EditPageController($routeParams, PageService){
-       var vm = this;
-       vm.websiteId = $routeParams.websiteId;
-       vm.pageId = $routeParams.pageId;
-       vm.pages = PageService.findPageByWebsiteId(vm.websiteId);
-       vm.name = $routeParams.name;
-       vm.description = $routeParams.description;
-       vm. updatePage = updatePage;
-       function updatePage(){
-           PageService.updatePage(vm.pageId,page);
-       }
-   }
+
+
 
 
 })();

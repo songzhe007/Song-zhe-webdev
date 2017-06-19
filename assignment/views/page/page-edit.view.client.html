@@ -2,42 +2,46 @@
     <div class="container-fluid row">
 
         <div class="navbar-text pull-left">
-            <a href="page-list.html" class="cl-text-black cl-icon-padding">
+            <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page" class="cl-text-black cl-icon-padding">
           <span class="glyphicon glyphicon-chevron-left">
           </span>
             </a>
         </div>
         <div class="navbar-text pull-right">
-            <a href="page-list.html" class="cl-icon-padding cl-text-black">
+            <a ng-click="model.updatePage(model.name, model.description)" class="cl-icon-padding cl-text-black">
           <span class="glyphicon glyphicon-ok">
           </span>
             </a>
         </div>
         <a class="navbar-brand cl-text-white cl-text-bold" href="#">
-            Pages
+            Edit Page
         </a>
     </div>
 </nav>
+
 <div class="container">
-    <form class="cl-form-bottom-padding">
-        Name
-        <input type="text" class="form-control" placeholder="Page Name" id="pagename" required>
-        Title
-        <input type="title" class="form-control" placeholder="Page Title" id="pagetitle" required>
-
+    <form>
+        <div class="form-group">
+            <label for="page-name">Name</label>
+            <input ng-model="model.name"
+                   type="text" class="form-control" id="page-name" placeholder="Page Name">
+        </div>
+        <div class="form-group">
+            <label for="page-title">Title</label>
+            <input ng-model="model.description"
+                   type="text" class="form-control" id="page-title" placeholder="Page Title">
+        </div>
     </form>
-    <a class="btn btn-danger  btn-block" href="page-list.html">Delete</a>
-
+    <a class="btn btn-danger  btn-block"
+       ng-click="model.deletePage()">Delete</a>
 </div>
 
 <nav class="navbar navbar-default navbar-fixed-bottom">
     <div class="container-fluid row">
         <div class="pull-right navbar-text">
-
-            <a href="profile.html" class="tv-icon-padding">
+            <a href="#!/user/{{model.uid}}" class="cl-icon-padding">
                 <span class="glyphicon glyphicon-user"></span>
             </a>
-
         </div>
     </div>
 </nav>
