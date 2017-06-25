@@ -3,7 +3,9 @@
         <a class="navbar-brand cl-navbar-text" href="#">
             Profile
         </a>
-        <a ng-click="model.updateUser()" class="navbar-link navbar-text pull-right cl-navbar-text">
+        <a ng-click="model.updateUser(model.user.username, model.user.email,
+        model.user.firstName, model.user.lastName, model.user.password)"
+           class="navbar-link navbar-text pull-right cl-navbar-text  cl-text-white cl-icon-padding">
             <span class="glyphicon glyphicon-ok"></span>
         </a>
     </div>

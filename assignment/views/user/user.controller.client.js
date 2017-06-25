@@ -33,7 +33,11 @@
                 return;
             }
             var user = UserService.findUserByUsername(username);
-            if (user === null) {
+            if (user != null) {
+                vm.error = "Username already exists.";
+
+            }
+            else {
                 user = {
                     username: username,
                     password: password,
@@ -44,9 +48,6 @@
                 UserService.createUser(user);
                 user = UserService.findUserByUsername(username);
                 $location.url("/user/" + user._id);
-            }
-            else {
-                vm.error = "Username already exists.";
             }
         }
     }
@@ -61,14 +62,14 @@
         vm.updateUser = updateUser;
 
         function updateUser() {
-            var update_user = {
+            var user2 = {
                 _id: $routeParams.uid,
                 firstName: vm.firstName,
                 lastName: vm.lastName,
                 email: vm.email
             };
-            UserService.updateUser($routeParams.uid, update_user);
-            vm.updated = "Profile changes saved!";
+            UserService.updateUser($routeParams.uid, user2);
+            vm.updated = "Your profile has been updated!!";
 
             $timeout(function () {
                 vm.updated = null;

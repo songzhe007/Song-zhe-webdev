@@ -1,6 +1,4 @@
-/**
- * Created by ChangLiu on 6/17/17.
- */
+
 (function () {
     angular
         .module("WebAppMaker")
@@ -11,6 +9,7 @@
 
     function WidgetListController($routeParams, WidgetService, $sce) {
         var vm = this;
+
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
         vm.pid = $routeParams.pid;
