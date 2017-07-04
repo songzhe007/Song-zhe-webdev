@@ -13,13 +13,13 @@
 
     function NewWebsiteController($routeParams, WebsiteService) {
         var vm = this;
-        vm.websiteId = $routeParams.websiteId;
-        vm.websites = WebsiteService.findWebsiteById(vm.websiteId);
+       // vm.websiteId = $routeParams.websiteId;
+        //vm.websites = WebsiteService.findWebsiteById(vm.websiteId);
         vm.uid = $routeParams.uid;
-        vm.websites = WebsiteService.findWebsitesByUser(vm.uid);
+        //vm.websites = WebsiteService.findWebsitesByUser(vm.uid);
         vm. createWebsite = createWebsite;
 
-        function createWebsite(){
+        function createWebsite(name,description){
             WebsiteService. createWebsite (vm.uid,website);
         }
 
