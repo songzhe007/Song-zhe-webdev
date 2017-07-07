@@ -1,0 +1,41 @@
+<nav class="navbar narbar-default navbar-fixed-top cl-blue-navbar">
+    <div class="container-fluid">
+        <a class="navbar-brand cl-navbar-text cl-text-white" href="#">
+            Profile
+        </a>
+        <a ng-click="model.updateUser(model.user)"
+           class="navbar-link navbar-text pull-right cl-navbar-text cl-text-white">
+            <span class="glyphicon glyphicon-ok"></span>
+        </a>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <div ng-show="model.message" class="alert alert-success" role="alert">{{model.message}}</div>
+    <form class="cl-form-bottom-padding">
+        <label for="username">Username</label>
+        <input ng-model="model.user.username" type="text" class="form-control" placeholder="Username" id="username" required>
+        <label for="email">Email</label>
+        <input ng-model="model.user.email" type="email" class="form-control" placeholder="alice@emmail.com" id="email" required>
+        <label for="firstName">First Name</label>
+        <input ng-model="model.user.firstName" type="text" class="form-control" placeholder="first name" id="firstName" required>
+        <label for="lastName">Last Name</label>
+        <input ng-model="model.user.lastName" type="text" class="form-control" placeholder="last name" id="lastName" required>
+    </form>
+
+    <a href="#!/user/{{model.user._id}}/website" class="btn btn-primary btn-block">Websites</a>
+    <a ng-click="model.removeUser(model.user._id)"
+       href="#!/login" class="btn btn-danger btn-block">Delete User</a>
+
+    <a href="#!/login" class="btn btn-danger btn-block">Logout</a>
+</div>
+
+<nav class="navbar navbar-fixed-bottom cl-blue-navbar">
+    <div class="container-fuild">
+        <a href="#!/user/{{model.user._id}}"
+           class="navbar-link navbar-text pull-right cl-navbar-text cl-icon-padding cl-text-white">
+            <span class="glyphicon glyphicon-user"></span>
+        </a>
+    </div>
+</nav>

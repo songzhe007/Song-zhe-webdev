@@ -15,13 +15,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 app.set('port', (process.env.PORT || 5000));
-app.use(express.static(__dirname+'/assignment'));
+app.use(express.static(__dirname+'/public'));
 
 app.listen(app.get('port'), function() {
     console.log('Node app is running on port', app.get('port'));
 });
 
 // require('./assignment/undergrad/app');
-require("./assignment/services/app.js")(app);
+require("./public/assignment/server_services/app.js")(app);
 // require("./public_two/serverExample/server_side/app.js")(app);
 

@@ -1,0 +1,61 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fuild row">
+        <div class="navbar-text pull-left">
+            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page" class="cl-text-black cl-icon-padding">
+                <span class="glyphicon glyphicon-chevron-left"> </span>
+            </a>
+        </div>
+        <div class="navbar-text pull-right">
+            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.widget[0].pageId}}/widget/new" class="cl-icon-padding cl-text-black">
+                <span class="glyphicon glyphicon-plus"> </span>
+            </a>
+        </div>
+        <a class="navbar-brand cl-text-white cl-text-bold">
+            Widgets
+        </a>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div ng-repeat="widget in model.widget">
+        <div class="oull-right">
+            <a class="pull-right">
+                <span class="glyphicon glyphicon-menu-hamburger"></span>
+            </a>
+            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.widget[0].pageId}}/widget/{{widget._id}}"><span class="glyphicon glyphicon-cog pull-right"></span></a>
+        </div>
+        <div ng-switch="widget.widgetType">
+            <div ng-switch-when="HEADING">
+                <div ng-include="'views/widget/widget-heading.view.client.html'"></div>
+            </div>
+            <div ng-switch-when="TEXT">
+                {{widget.text}}
+            </div>
+
+            <div ng-switch-when="IMAGE">
+                <div ng-include="'views/widget/widget-image.view.client.html'"></div>
+            </div>
+
+            <div ng-switch-when="HTML" ng-bind-html="model.trust(widget.text)">
+                {{widget.text}}
+            </div>
+
+            <div ng-switch-when="YOUTUBE">
+                <div ng-include="'views/widget/widget-youtube.view.client.html'"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid row">
+        <div class="navbar-text pull-left">
+            <a class="tv-icon-padding"><span class="glyphicon glyphicon-triangle-right"></span></a>
+            <a class="tv-icon-padding"><span class="glyphicon glyphicon-eye-open"></span></a>
+        </div>
+        <div class="navbar-text pull-right">
+            <a href="#!/user/{{model.website.developerId}}" class="cl-icon-padding">
+                <span class="glyphicon glyphicon-user"></span>
+            </a>
+        </div>
+    </div>
+</nav>

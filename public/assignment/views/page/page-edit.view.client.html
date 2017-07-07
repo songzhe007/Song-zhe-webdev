@@ -1,0 +1,34 @@
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container-fluid row">
+        <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page" class="navbar-link navbar-text pull-left cl-icon-padding cl-navbar-text cl-text-white">
+            <span class="glyphicon glyphicon-chevron-left "></span>
+        </a>
+        <a class="navbar-brand cl-navbar-text cl-text-white">
+            Edit Page
+        </a>
+        <a ng-click="model.updatePage(model.name, model.description)" a href = "#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page" class="navbar-link navbar-text pull-right cl-navbar-text cl-text-white">
+            <span class="glyphicon glyphicon-ok"></span>
+        </a>
+    </div>
+</nav>
+
+
+<div class="container-fluid">
+    <form class="cl-form-bottom-padding">
+        <label for="name">Name</label>
+        <input ng-model="model.name" type="text" class="form-control" placeholder="Name" id="name" required>
+        <label for="description">Title</label>
+        <input ng-model="model.description" type="text" class="form-control" placeholder="Page Title" id="description" required>
+    </form>
+    <a class="btn btn-danger btn-block" ng-click="model.removePage(model.page._id)" a href = "#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page">Delete</a>
+</div>
+
+<nav class="navbar navbar-default navbar-fixed-bottom">
+    <div class="container-fluid row">
+        <div class="navbar-text pull-right">
+            <a href="#!/user/{{model.website.developerId}}" class="cl-icon-padding">
+                <span class="glyphicon glyphicon-user"></span>
+            </a>
+        </div>
+    </div>
+</nav>
