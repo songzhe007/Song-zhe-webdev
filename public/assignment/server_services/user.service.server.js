@@ -2,6 +2,8 @@
 
 module.exports = function(app){
 
+
+
     var users = [
         {_id: "123", username: "alice", password: "alice", firstName: "Alice", lastName: "Wonder", email:""},
         {_id: "234", username: "bob", password: "bob", firstName: "Bob", lastName: "Marley", email:''},
@@ -11,6 +13,7 @@ module.exports = function(app){
 
     // GET Calls.
     app.get('/assignment/api/user?username=username', findUserByUsername);
+   // app.get('/assignment/api/user', checkUser);
     app.get('/assignment/api/user', findUserByCredentials);
     app.get('/assignment/api/user/:uid', findUserById);
 

@@ -1,7 +1,7 @@
 module.exports = function(app){
 
     var multer = require('multer');
-    var upload = multer({ dest: __dirname+'/../../public/assignment/uploads' });
+    var upload = multer({ dest: __dirname+'/../../uploads' });
 
     var widgets = [
         {_id: "123", widgetType: "HEADING", pageId: "321", size: 2, text: "GIZMODO-heading"},
@@ -66,10 +66,22 @@ module.exports = function(app){
 
         console.log(myFile);
 
-        var widget = {};
-        widget.url = '/assignment/api/uploads/'+filename;
+        var widget = widgets.find(function (wi) { return wi._id==widgetId });
+                if(!widget) {
+                        widget = {
+                                _id: new Date().getTime(),
+                                widgetType: 'IMAGE',
+                                pageId: pageId,
+                                size: size,
+                                name: '',
+                                text: '',
+                                width: width,
+                            };
+                        widgets.push(widget);
+                    }
+                widget.url = '/uploads/'+filename;
 
-        var callbackUrl   = "/assignment/#!/user/" + userId + "/website/" + websiteId + "/page/" + pageId + "/widget/";
+                var callbackUrl   = "/assignment/#!/user/" + userId + "/website/" + websiteId + "/page/" + pageId + "/widget/";
 
         res.redirect(callbackUrl);
     }

@@ -28,13 +28,7 @@
                 });
         }
 
-        // function logout() {
-        //     var url = "api/logout";
-        //     return $http.post(url)
-        //         .then(function (response) {
-        //             return response.data;
-        //         });
-        // }
+
 
         function checkLoggedIn() {
             var url = "api/heckLoggedIn";

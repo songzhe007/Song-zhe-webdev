@@ -31,31 +31,42 @@
         vm.register = register;
 
         function register(username, password, vpassword) {
-
+            if(username==="" || username=== null || password==="" || password===null
+                || vpassword==="" || vpassword===null){
+                vm.error="username/password can not be empty!"
+                return;
+            }
             if(password !== vpassword) {
                 vm.error = "Passwords doesn't match";
                 return;
             }
-
             var exist = UserService.findUserByUsername(username);
 
-            if(exist !== null) {
-                vm.error = "Username is already exist";
-            } else {
-                var user = {
-                    username: username,
-                    password: password,
+            UserService
+                .findUserByUsername(username)
+                .then(
+                    function () {
+                        if(exist !==null) {
+                            vm.error = "Username already exists.";
+                        }
+                    },
+                    function () {
+                        var user = {
+                            username: username,
+                            password: password,
 
-                };
-
-                UserService
-                    .createUser(user)
-                    .then(function (user) {
-                        $location.url('/user/' + user._id);
-                    });
-            }
+                        };
+                        return UserService
+                            .createUser(user);
+                    }
+                )
+                .then(function (user) {
+                    $location.url("/user/" + user._id);
+                });
         }
+
     }
+
 
     function ProfileController($routeParams,UserService,$location) {
         var vm = this;
@@ -72,19 +83,29 @@
         vm.updateUser = updateUser;
         vm.removeUser = removeUser;
 
-        function updateUser(user) {
+        function updateUser(username, email, firstName, lastName, passWord) {
+            var user = {
+                _id: $routeParams.uid,
+                username: username,
+                email: email,
+                firstName: firstName,
+                lastName: lastName,
+                passWord: passWord
+            };
 
             UserService
                 .updateUser(user._id,user)
-                .then(function(newuser) {
-                    model.message = "Profile updated successfully!"
-                    $location.url("/user/"+newuser._id);
+                .then(function() {
+                    vm.message = "User updated successfully!"
                 });
         }
 
         function removeUser(uid) {
             UserService
                 .deleteUser(uid)
+                .then(function () {
+                    $location.url("/login");
+                });
         }
 
     }
