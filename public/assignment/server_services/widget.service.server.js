@@ -16,6 +16,8 @@ module.exports = function(app){
 
     //POST Calls
     app.post ("/assignment/api/upload", upload.single('myFile'), uploadImage);
+    app.post('/api/assignment/page/:pageId/widget/order', reOrderWidget);
+    app.post('/api/assignment/page/:pageId/widget/order', sortWidget);
     //
     app.post('/assignment/api/page/:pageId/widget',createWidget);
 
@@ -28,6 +30,45 @@ module.exports = function(app){
 
     //DELETE Calls
     app.delete('/assignment/api/widget/:widgetId',deleteWidget);
+
+    function reOrderWidget(req, res){
+        const pageId = req.params['pageId'];
+        const newOrder = req.body.elems;
+        for(var i in newOrder){
+            for(var j in widgets){
+                if(widgets[j]._id == newOrder[i]){
+                    widgets[j].index = i;
+                }
+            }
+        }
+
+        res.sendStatus(200);
+    }
+
+    function sortWidget(req, res) {
+        var pageId = req.param.pid;
+        var pageWidgets = [];
+        for(w in widgets) {
+            var widget = widgets[w];
+            if(parseInt(widget.pageId) === parseInt(pageId)) {
+                pageWidgets.push(widget);
+            }
+        }
+
+        var index1 = req.query.start;
+        var index2 = req.query.end;
+
+        var start = widgets.indexOf(pageWidgets[index1]);
+        var end = widgets.indexOf(pageWidgets[index2]);
+
+        if(index1 && index2) {
+            widgets.slice(end, 0, widgets.slice(start, 1)[0]);
+            res.sendStatus(200);
+            return;
+        }
+        res.status(404).send("Cannot reorder widgets");
+    }
+
 
 
     function updateWidget(req, res) {
