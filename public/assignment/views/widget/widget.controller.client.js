@@ -4,7 +4,7 @@
         .controller("WidgetListController", WidgetListController)
         .controller("NewWidgetController", NewWidgetController)
         .controller("CreateWidgetController", CreateWidgetController)
-        .controller("EditWidgetController", EditWidgetController);
+        .controller("EditWidgetController", EditWidgetController)
 
     function WidgetListController($routeParams, WebsiteService, PageService, WidgetService, $sce) {
         var model = this;
@@ -33,15 +33,14 @@
         function renderWebsite(website) {
             model.website = website;
         }
-/**
+
         PageService
-            .findPageByWebsiteId(wid)
+            .findPageById(pid)
             .then(renderPage);
 
         function renderPage(page) {
             model.page = page;
         }
- */
 
         WidgetService
             .findWidgetsByPageId(pid)
@@ -169,4 +168,6 @@
         }
 
     }
+
+
 })();

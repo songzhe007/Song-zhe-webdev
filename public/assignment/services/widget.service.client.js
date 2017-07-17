@@ -24,9 +24,19 @@
             'findWidgetById': findWidgetById,
             'updateWidget': updateWidget,
             'deleteWidget': deleteWidget,
-            'deleteWidgetsByPage': deleteWidgetsByPage
+            'deleteWidgetsByPage': deleteWidgetsByPage,
+            'reorderWidgets': reorderWidgets
         };
         return services;
+
+        function reorderWidgets(pageId, start, end) {
+         var url = "/api/page/" + pageId + "/widget?initial=" + start + "&final=" + end;
+         return $http.put(url)
+          .then(function (response) {
+          return response.data;
+           });
+        }
+
 
         function createHeaderWidget(widgetId, pageId, widget) {
             return {

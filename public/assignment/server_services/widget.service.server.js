@@ -16,8 +16,7 @@ module.exports = function(app){
 
     //POST Calls
     app.post ("/assignment/api/upload", upload.single('myFile'), uploadImage);
-    app.post('/api/assignment/page/:pageId/widget/order', reOrderWidget);
-    app.post('/api/assignment/page/:pageId/widget/order', sortWidget);
+
     //
     app.post('/assignment/api/page/:pageId/widget',createWidget);
 
@@ -27,9 +26,13 @@ module.exports = function(app){
 
     //PUT Calls
     app.put('/assignment/api/widget/:widgetId',updateWidget);
+    app.put('/assignment/api/page/:pageId/widget', sortWidget);
+
 
     //DELETE Calls
     app.delete('/assignment/api/widget/:widgetId',deleteWidget);
+    app.post('/api/assignment/page/:pageId/widget/order', reOrderWidget);
+
 
     function reOrderWidget(req, res){
         const pageId = req.params['pageId'];
@@ -44,6 +47,7 @@ module.exports = function(app){
 
         res.sendStatus(200);
     }
+
 
     function sortWidget(req, res) {
         var pageId = req.param.pid;
@@ -71,11 +75,13 @@ module.exports = function(app){
 
 
 
+
     function updateWidget(req, res) {
         var widget = req.body;
         var wgid = req.params.widgetId;
         for(wi in widgets) {
-            if(wgid === widgets[wi]._id) {
+
+            if(parseInt(widgets[wi]._id) === parseInt(wgid)) {
                 widgets[wi].size = widget.size;
                 widgets[wi].text = widget.text;
                 widgets[wi].width = widget.width;

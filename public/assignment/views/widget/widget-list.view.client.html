@@ -6,8 +6,7 @@
             </a>
         </div>
         <div class="navbar-text pull-right">
-            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.widget[0].pageId}}/widget/new"
-               class="cl-icon-padding cl-text-black">
+            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.page._id}}/widget/new" class="cl-icon-padding cl-text-black">
                 <span class="glyphicon glyphicon-plus"> </span>
             </a>
         </div>
@@ -17,14 +16,15 @@
     </div>
 </nav>
 
+
+
 <div sortable pid="model.widget[0].pageId" class="container-fluid">
     <div ng-repeat="widget in model.widget">
         <div class="oull-right">
             <a class="pull-right">
                 <span class="glyphicon glyphicon-menu-hamburger"></span>
             </a>
-            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.widget[0].pageId}}/widget/{{widget._id}}">
-                <span class="glyphicon glyphicon-cog pull-right"></span></a>
+            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.page._id}}/widget/{{widget._id}}"><span class="glyphicon glyphicon-cog pull-right"></span></a>
         </div>
         <div ng-switch="widget.widgetType">
             <div ng-switch-when="HEADING">

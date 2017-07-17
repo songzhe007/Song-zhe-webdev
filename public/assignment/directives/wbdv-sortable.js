@@ -1,9 +1,6 @@
-/**
- * Created by SongZheDerrick on 2017/7/16.
- */
-
 (function(){
-    angular.module('WebAppMaker').directive('sortable', elementSortable);
+    angular.module('WebAppMaker')
+        .directive('sortable', elementSortable);
 
     function elementSortable(){
         function linkFunction(scope, element) {
