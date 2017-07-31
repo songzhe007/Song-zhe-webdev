@@ -1,12 +1,12 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fuild row">
         <div class="navbar-text pull-left">
-            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page" class="cl-text-black cl-icon-padding">
+            <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page" class="cl-text-black cl-icon-padding">
                 <span class="glyphicon glyphicon-chevron-left"> </span>
             </a>
         </div>
         <div class="navbar-text pull-right">
-            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.page._id}}/widget/new" class="cl-icon-padding cl-text-black">
+            <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/new" class="cl-icon-padding cl-text-black">
                 <span class="glyphicon glyphicon-plus"> </span>
             </a>
         </div>
@@ -16,30 +16,29 @@
     </div>
 </nav>
 
-
-
-<div sortable pid="model.widget[0].pageId" class="container-fluid">
-    <div ng-repeat="widget in model.widget">
+<div sortable class="container-fluid">
+    <div ng-repeat="widget in model.widgets">
+        <div class="widget" data-wid="{{widget._id}}"></div>
         <div class="oull-right">
             <a class="pull-right">
                 <span class="glyphicon glyphicon-menu-hamburger"></span>
             </a>
-            <a href="#!/user/{{model.website.developerId}}/website/{{model.website._id}}/page/{{model.page._id}}/widget/{{widget._id}}"><span class="glyphicon glyphicon-cog pull-right"></span></a>
+            <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget/{{widget._id}}"><span class="glyphicon glyphicon-cog pull-right"></span></a>
         </div>
-        <div ng-switch="widget.widgetType">
+        <div ng-switch="widget.type">
             <div ng-switch-when="HEADING">
                 <div ng-include="'views/widget/widget-heading.view.client.html'"></div>
             </div>
-            <div ng-switch-when="TEXT">
-                {{widget.text}}
+            <div ng-switch-when="TEXTINPUT">
+                <div ng-include="'views/widget/widget-text.view.client.html'"></div>
             </div>
 
             <div ng-switch-when="IMAGE">
                 <div ng-include="'views/widget/widget-image.view.client.html'"></div>
             </div>
 
-            <div ng-switch-when="HTML" ng-bind-html="model.trust(widget.text)">
-                {{widget.text}}
+            <div ng-switch-when="HTML">
+                <div ng-include="'views/widget/widget-html.view.client.html'"></div>
             </div>
 
             <div ng-switch-when="YOUTUBE">
@@ -56,7 +55,7 @@
             <a class="tv-icon-padding"><span class="glyphicon glyphicon-eye-open"></span></a>
         </div>
         <div class="navbar-text pull-right">
-            <a href="#!/user/{{model.website.developerId}}" class="cl-icon-padding">
+            <a href="#!/user/{{model.uid}}" class="cl-icon-padding">
                 <span class="glyphicon glyphicon-user"></span>
             </a>
         </div>

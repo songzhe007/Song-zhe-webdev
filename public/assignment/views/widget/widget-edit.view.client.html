@@ -1,14 +1,13 @@
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid row">
-
-        <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget"
-           class="navbar-link navbar-text pull-left cl-icon-padding cl-navbar-text cl-text-white">
+        <!--<a href="#!/usemodelsodel.website.developerId}}/websitmodelsodel.website._id}}/pagmodelsodel.widget.pageId}}/widget" class="navbar-link navbar-text pull-left cl-icon-padding cl-navbar-text cl-text-white">-->
+        <a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget" class="navbar-link navbar-text pull-left cl-icon-padding cl-navbar-text cl-text-white">
             <span class="glyphicon glyphicon-chevron-left "></span>
         </a>
         <a class="navbar-brand cl-navbar-text cl-text-white">
             Widget Edit
         </a>
-        <a ng-click="model.updateWidget()"
+        <a ng-click="model.updateWidget(model.widget)"
            a href="#!/user/{{model.uid}}/website/{{model.wid}}/page/{{model.pid}}/widget"
            class="navbar-link navbar-text pull-right cl-navbar-text cl-text-white">
             <span class="glyphicon glyphicon-ok"></span>
@@ -16,7 +15,7 @@
     </div>
 </nav>
 
-<div ng-switch="model.widget.widgetType" class="container">
+<div ng-switch="model.widgetType" class="container">
     <div ng-switch-when="HEADING">
         <div ng-include="'views/widget/widget-heading-edit.view.client.html'"></div>
     </div>
@@ -31,6 +30,9 @@
     </div>
     <div ng-switch-when="YOUTUBE">
         <div ng-include="'views/widget/widget-youtube-edit.view.client.html'"></div>
+    </div>
+    <div ng-switch-when="TEXTINPUT">
+        <div ng-include="'views/widget/widget-text-edit.view.client.html'"></div>
     </div>
 </div>
 

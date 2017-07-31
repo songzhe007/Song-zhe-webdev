@@ -1,14 +1,12 @@
 <nav class="navbar narbar-default navbar-fixed-top cl-blue-navbar">
     <div class="container-fluid">
-        <a href="#!/user/{{model.website[0].developerId}}"
-           class="navbar-link navbar-text pull-left cl-navbar-text cl-text-white">
+        <a href="#!/user/{{model.uid}}" class="navbar-link navbar-text pull-left cl-navbar-text cl-text-white">
             <span class="glyphicon glyphicon-chevron-left "></span>
         </a>
         <a class="navbar-brand cl-navbar-text cl-text-white">
             Websites
         </a>
-        <a href="#!/user/{{model.website[0].developerId}}/website/new"
-           class="navbar-link navbar-text pull-right cl-navbar-text cl-text-white">
+        <a href="#!/user/{{model.uid}}/website/new" class="navbar-link navbar-text pull-right cl-navbar-text cl-text-white">
             <span class="glyphicon glyphicon-plus"></span>
         </a>
     </div>
@@ -16,18 +14,16 @@
 
 <div class="container-fluid">
     <ul class="list-group cl-list-group-borderless">
-        <li ng-repeat="website in model.website" class="list-group-item cl-list-item-borderless">
-            <a href="#!/user/{{website.developerId}}/website/{{website._id}}">
-                <span class="glyphicon glyphicon-cog pull-right"></span></a>
-            <a href="#!/user/{{website.developerId}}/website/{{website._id}}/page">{{website.name}}</a>
+        <li ng-repeat="website in model.websites" class="list-group-item cl-list-item-borderless">
+            <a href="#!/user/{{website._user}}/website/{{website._id}}"><span class="glyphicon glyphicon-cog pull-right"></span></a>
+            <a href="#!/user/{{website._user}}/website/{{website._id}}/page">{{website.name}}</a>
         </li>
     </ul>
 </div>
 
 <nav class="navbar navbar-fixed-bottom cl-blue-navbar">
     <div class="container-fuild">
-        <a href="#!/user/{{model.website[0].developerId}}"
-           class="navbar-link navbar-text pull-right cl-navbar-text cl-icon-padding cl-text-white">
+        <a href="#!/user/{{model.uid}}" class="navbar-link navbar-text pull-right cl-navbar-text cl-icon-padding cl-text-white">
             <span class="glyphicon glyphicon-user"></span>
         </a>
     </div>

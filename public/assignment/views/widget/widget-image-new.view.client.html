@@ -17,46 +17,44 @@
 <div class="container">
     <form>
         <div class="form-group">
-            <label for="widget-image-name">Name</label>
-            <input ng-model="model.widgetName" type="text" class="form-control" id="widget-image-name"
+            <label for="image-name">Name</label>
+            <input ng-model="model.widget.name" type="text" class="form-control" id="image-name"
                    placeholder="Name">
         </div>
         <div class="form-group">
-            <label for="widget-image-text">Text</label>
-            <input ng-model="model.widgetText" type="text" class="form-control" id="widget-image-text"
+            <label for="image-text">Text</label>
+            <input ng-model="model.widget.text" type="text" class="form-control" id="image-text"
                    placeholder="Text">
         </div>
         <div class="form-group">
-            <label for="widget-image-url">URL</label>
-            <input ng-model="model.widgetUrl" type="text" class="form-control" id="widget-image-url"
+            <label for="image-url">URL</label>
+            <input ng-model="model.widget.url" type="text" class="form-control" id="image-url"
                    placeholder="http://www.example.com">
         </div>
         <div class="form-group">
-            <label for="widget-image-width">Width</label>
-            <input ng-model="model.widgetWidth" type="text" class="form-control" id="widget-image-width"
+            <label for="image-width">Width</label>
+            <input ng-model="model.widget.width" type="text" class="form-control" id="image-width"
                    placeholder="100%">
         </div>
 
         <div>
-            <a ng-click="model.createWidget()" class="btn btn-primary btn-block" id="widget-heading-create-btn">Create</a>
+            <a ng-click="model.createWidget(model.widget)" class="btn btn-primary btn-block" id="widget-heading-create-btn">Create</a>
         </div>
     </form>
 
     <div ng-show="model.createError" class="alert alert-danger" role="alert">{{model.createError}}</div>
 
 
-    <form action=/assignment/api/upload   method="post" enctype="multipart/form-data">
-        <input  name="myFile"    type="file" class="form-control"/>
-        <input  name="width"     value="100%" style="display: none"/>
-        <input  name="userId"    value="{{model.uid}}"   style="display: none"/>
-        <input  name="websiteId" value="{{model.wid}}"   style="display: none"/>
-        <input  name="pageId"    value="{{model.pid}}"   style="display: none"/>
-        <input  name="widgetId"  value="{{model.wgid}}"   style="display: none"/>
-        <button type="submit"    class="btn btn-block btn-primary">Upload Image</button>
-    </form>
+    <!--<form action=/api/upload   method="post" enctype="multipart/form-data">-->
+        <!--<input  name="myFile"    type="file" class="form-control"/>-->
+        <!--<input  name="width"     value="100%" style="display: none"/>-->
+        <!--<input  name="userId"    value="{{model.uid}}"   style="display: none"/>-->
+        <!--<input  name="websiteId" value="{{model.wid}}"   style="display: none"/>-->
+        <!--<input  name="pageId"    value="{{model.pid}}"   style="display: none"/>-->
+        <!--<input  name="widgetId"  value="{{model.wgid}}"   style="display: none"/>-->
+        <!--<button type="submit"    class="btn btn-block btn-primary">Upload Image</button>-->
+    <!--</form>-->
 
-
-    <div ng-show="model.createError" class="alert alert-danger" role="alert">{{model.createError}}</div>
 
 </div>
 

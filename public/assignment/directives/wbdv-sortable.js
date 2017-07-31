@@ -1,31 +1,27 @@
-(function(){
-    angular.module('WebAppMaker')
-        .directive('sortable', elementSortable);
+(function () {
+    angular
+        .module('DirectiveLecture', [])
+        .directive('sortable', sortable);
 
-    function elementSortable(){
+
+    function sortable() {
+
         function linkFunction(scope, element) {
-            const pageId = scope.pageId;
-            $(element).sortable({
-                    update: function(event, ui){
-                        const elemOrder = [];
-                        const widgetsElem = $('.widget').toArray();
-                        widgetsElem.forEach(function(item){
-                            elemOrder.push(item.id);
-                        });
+            var initialIndex = -1;
+            var finalIndex = -1;
 
-                        $.post(
-                            '/api/assignment/page/' + pageId + '/widget/order',
-                            {elems: elemOrder}
-                        );
-                    }
+            $(element).sortable({
+                start: function (event, ui) {
+                    initialIndex = $(ui.item).index();
+                },
+                stop: function (event, ui) {
+                    finalIndex = $(ui.item).index();
+                    scope.model.sortWidgets(initialIndex, finalIndex);
                 }
-            );
+            });
         }
 
         return {
-            scope: {
-                pageId: '=pid'
-            },
             link: linkFunction
         }
     }

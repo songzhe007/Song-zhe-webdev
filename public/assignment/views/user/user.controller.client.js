@@ -7,106 +7,96 @@
 
     function LoginController($location, UserService) {
         var vm = this;
+        vm.login = login;
 
-        vm.login = function (username, password) {
+        function login(username, password) {
             UserService
                 .findUserByCredentials(username, password)
-                .then(login);
-
-
-            function login(found) {
-                if(found !== "") {
-                    $location.url('/user/' + found._id);
-                } else {
-                    vm.message = "Username doesn't exist";
-                }
-            }
-        };
+                .then(function (user) {
+                    if (user) {
+                        $location.url("/user/" + user._id);
+                    } else {
+                        vm.message = "Username does not exist.";
+                    }
+                });
+        }
     }
 
     function RegisterController($location, UserService) {
         var vm = this;
-
-
         vm.register = register;
 
         function register(username, password, vpassword) {
-            if(username==="" || username=== null || password==="" || password===null
-                || vpassword==="" || vpassword===null){
-                vm.error="username/password can not be empty!"
+            if (username === undefined || username === null || username === "" || password === undefined || password === "") {
+                vm.message = "Username and Passwords cannot be empty.";
                 return;
             }
-            if(password !== vpassword) {
-                vm.error = "Passwords doesn't match";
+            if (password !== vpassword) {
+                vm.message = "Password does not match.";
                 return;
             }
-            var exist = UserService.findUserByUsername(username);
-
             UserService
                 .findUserByUsername(username)
-                .then(
-                    function () {
-                        if(exist !==null) {
-                            vm.error = "Username already exists.";
-                        }
-                    },
-                    function () {
-                        var user = {
+                .then(function (user) {
+                    if (user) {
+                        vm.message = "Username already exists.";
+                    }
+                    else {
+                        var NewUser = {
                             username: username,
                             password: password,
+                            firstName: "",
+                            lastName: "",
+                            email: ""
+                        }
 
-                        };
-                        return UserService
-                            .createUser(user);
+                        UserService
+                            .createUser(NewUser)
+                            .then(function (newUser) {
+                                if (newUser) {
+                                    $location.url("/user/" + newUser._id);
+                                }
+                            });
                     }
-                )
-                .then(function (user) {
-                    $location.url("/user/" + user._id);
                 });
         }
-
     }
 
-
-    function ProfileController($routeParams,UserService,$location) {
+    function ProfileController($routeParams, $timeout, UserService, $location) {
         var vm = this;
-        var uid = $routeParams.uid;
+        UserService.findUserById($routeParams.uid)
+                   .then(renderUser);
 
-        UserService
-            .findUserById(uid)
-            .then(renderUser);
-
-        function renderUser(user) {
+        function renderUser (user) {
             vm.user = user;
         }
 
         vm.updateUser = updateUser;
         vm.removeUser = removeUser;
 
-        function updateUser(username, email, firstName, lastName, passWord) {
-            var user = {
-                _id: $routeParams.uid,
-                username: username,
-                email: email,
-                firstName: firstName,
-                lastName: lastName,
-                passWord: passWord
-            };
-
+        function updateUser(user) {
             UserService
-                .updateUser(user._id,user)
-                .then(function() {
-                    vm.message = "User updated successfully!"
-                });
+                .updateUser(vm.user._id, user)
+                .then(
+                    function (newUser) {
+                        if (newUser) {
+                            vm.updated = "Profile changes saved!";
+                        }
+                    });
+
+            $timeout(function () {
+                vm.updated = null;
+            }, 3000);
         }
 
-        function removeUser(uid) {
+        function removeUser(user) {
             UserService
-                .deleteUser(uid)
+                .deleteUser(user._id)
                 .then(function () {
                     $location.url("/login");
                 });
-        }
 
+        }
     }
+
 })();

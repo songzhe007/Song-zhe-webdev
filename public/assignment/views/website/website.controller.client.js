@@ -1,92 +1,77 @@
-(function() {
+(function () {
     angular
         .module("WebAppMaker")
-        .controller("WebsiteListController", WebsiteListController)
-        .controller("NewWebsiteController", NewWebsiteController)
-        .controller("EditWebsiteController", EditWebsiteController);
+        .controller('WebsiteListController', WebsiteListController)
+        .controller('EditWebsiteController', EditWebsiteController)
+        .controller('NewWebsiteController', NewWebsiteController);
 
     function WebsiteListController($routeParams, WebsiteService) {
-        var model = this;
-        var uid = $routeParams.uid;
-        var wid = $routeParams.wid;
-
+        var vm = this;
+        vm.uid = $routeParams.uid;
         WebsiteService
-            .findWebsitesByUser(uid)
-            .then(renderWebsite);
-
-        function renderWebsite(website) {
-            model.website = website;
-        }
+            .findAllWebsitesForUser(vm.uid)
+            .then(function (websites) {
+                vm.websites = websites;
+            });
     }
 
-    function NewWebsiteController($routeParams, WebsiteService) {
-        var model = this;
-        var uid = $routeParams.uid;
-        var wid = $routeParams.wid;
-
+    function NewWebsiteController($routeParams, WebsiteService, $location) {
+        var vm = this;
+        vm.uid = $routeParams.uid;
         WebsiteService
-            .findWebsitesByUser(uid)
-            .then(renderWebsite);
+            .findAllWebsitesForUser(vm.uid)
+            .then(function (websites) {
+                vm.websites = websites;
+            });
 
-        function renderWebsite(website) {
-            model.website = website;
-        }
-
-        model.newWebsite = newWebsite;
-
+        vm.newWebsite = newWebsite;
         function newWebsite(name, description) {
             var website = {
                 name: name,
-                description: description,
-                developerId: $routeParams.uid
+                developId: "",
+                description: description
             };
+
             WebsiteService
-                .createWebsite(website)
+                .createWebsite(vm.uid, website)
+                .then(function () {
+                    $location.url("/user/" + vm.uid + "/website");
+                })
         }
     }
 
-    function EditWebsiteController($routeParams, WebsiteService,$location) {
-        var model = this;
-        var uid = $routeParams.uid;
-        var wid = $routeParams.wid;
-
+    function EditWebsiteController($routeParams, WebsiteService, $location) {
+        var vm = this;
+        vm.uid = $routeParams.uid;
+        vm.wid = $routeParams.wid;
         WebsiteService
-            .findWebsitesByUser(uid)
-            .then(renderWebsites)
-
-        function renderWebsites(websites) {
-            model.websites = websites;
-        }
-
+            .findAllWebsitesForUser(vm.uid)
+            .then(function (websites) {
+                vm.websites = websites;
+            });
         WebsiteService
-            .findWebsiteById(wid)
-            .then(renderWebsite)
+            .findWebsiteById(vm.wid)
+            .then(function (website) {
+                vm.website = website;
+            });
 
-        function renderWebsite(website) {
-            model.website = website;
-        }
+        vm.updateWebsite = updateWebsite;
+        vm.removeWebsite = removeWebsite;
 
-        model.updateWebsite = updateWebsite;
-        model.deletewebsite = deletewebsite;
-
-        function updateWebsite(name, description) {
-            var website = {
-                _id: $routeParams.wid,
-                name: name,
-                description: description,
-                developerId: $routeParams.uid
-            };
-
+        function updateWebsite(website) {
             WebsiteService
-                .updateWebsite(website._id,website)
-                .then(function() {
+                .updateWebsite(vm.wid, website)
+                .then(function () {
                     $location.url("/user/" + vm.uid + "/website");
                 });
         }
-        function deletewebsite(websiteId) {
+
+        function removeWebsite(websiteId) {
             WebsiteService
-                .deleteWebsite(websiteId)
+                .removeWebsite(websiteId)
+                .then(function () {
+                    $location.url("/user/" + vm.uid + "/website");
+                })
         }
     }
-
 })();

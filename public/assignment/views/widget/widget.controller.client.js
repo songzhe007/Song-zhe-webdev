@@ -4,16 +4,23 @@
         .controller("WidgetListController", WidgetListController)
         .controller("NewWidgetController", NewWidgetController)
         .controller("CreateWidgetController", CreateWidgetController)
-        .controller("EditWidgetController", EditWidgetController)
+        .controller("EditWidgetController", EditWidgetController);
 
-    function WidgetListController($routeParams, WebsiteService, PageService, WidgetService, $sce) {
-        var model = this;
-        var uid = $routeParams.uid;
-        var wid = $routeParams.wid;
-        var pid = $routeParams.pid;
+    function WidgetListController($routeParams, WidgetService, $sce, $location) {
+        var vm = this;
+        vm.uid = $routeParams.uid;
+        vm.wid = $routeParams.wid;
+        vm.pid = $routeParams.pid;
+        WidgetService
+            .findWidgetsByPageId(vm.pid)
+            .then(function (widgets) {
+                vm.widgets = widgets;
+            });
 
-        model.trust = trust;
-        model.getYoutubeEmbedUrl = getYoutubeEmbedUrl;
+
+        vm.trust = trust;
+        vm.getYoutubeEmbedUrl = getYoutubeEmbedUrl;
+        vm.sortWidgets = sortWidgets;
 
         function trust(html) {
             return $sce.trustAsHtml(html);
@@ -26,30 +33,14 @@
             return $sce.trustAsResourceUrl(embedUrl);
         }
 
-        WebsiteService
-            .findWebsiteById(wid)
-            .then(renderWebsite);
+        function sortWidgets(start, end) {
+            WidgetService
+                .reorderWidgets(vm.pid, start, end)
+                .then(function () {
+                    $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
+                });
 
-        function renderWebsite(website) {
-            model.website = website;
         }
-
-        PageService
-            .findPageById(pid)
-            .then(renderPage);
-
-        function renderPage(page) {
-            model.page = page;
-        }
-
-        WidgetService
-            .findWidgetsByPageId(pid)
-            .then(renderWidget);
-
-        function renderWidget(widget) {
-            model.widget = widget;
-        }
-
     }
 
     function NewWidgetController($routeParams, WidgetService) {
@@ -64,7 +55,7 @@
             });
     }
 
-    function CreateWidgetController($routeParams, $location,WidgetService) {
+    function CreateWidgetController($routeParams, $location, WidgetService) {
         var vm = this;
         vm.uid = $routeParams.uid;
         vm.wid = $routeParams.wid;
@@ -73,33 +64,33 @@
         vm.createWidget = createWidget;
         vm.createError = null;
 
-        function createWidget() {
-            if (vm.widgetType === 'YOUTUBE') {
-                if (vm.widgetUrl === null || vm.widgetUrl === undefined) {
+        var widget = {
+            type: vm.widgetType,
+            size: 3
+        };
+        vm.widget = widget;
+
+        function createWidget(widget) {
+            if (vm.widgetType === 'IMAGE' || vm.widgetType === 'YOUTUBE') {
+                if (vm.widget.url === null || vm.widget.url === undefined) {
                     vm.createError = "Url is required for Image/Youtube";
                     return;
                 }
             }
             if (vm.widgetType === 'HEADING') {
-                if (vm.widgetText === null || vm.widgetText === undefined) {
+                if (vm.widget.text === null || vm.widget.text === undefined) {
                     vm.createError = "Text is required for Header";
                     return;
                 }
             }
-            var newWidget = {
-                name: vm.widgetName,
-                text: vm.widgetText,
-                widgetType: vm.widgetType,
-                size: vm.widgetSize,
-                width: vm.widgetWidth,
-                url: vm.widgetUrl
-            };
-            if (newWidget === null || newWidget === undefined) {
+
+            if (widget === null || widget === undefined) {
                 vm.createError = "no new widget";
                 return;
             }
+
             WidgetService
-                .createWidget(vm.pid, newWidget)
+                .createWidget(vm.pid, widget)
                 .then(function () {
                     $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
                 });
@@ -116,44 +107,21 @@
             .findWidgetById(vm.wgid)
             .then(function (widget) {
                 vm.widget = widget;
-
-                if (vm.widget.widgetType === "HEADING") {
-                    vm.widgetName = vm.widget.name;
-                    vm.widgetText = vm.widget.text;
-                    vm.widgetSize = vm.widget.size;
-                } else if (vm.widget.widgetType === "IMAGE") {
-                    vm.widgetName = vm.widget.name;
-                    vm.widgetText = vm.widget.text;
-                    vm.widgetUrl = vm.widget.url;
-                    vm.widgetWidth = vm.widget.width;
-                } else if (vm.widget.widgetType === "YOUTUBE") {
-                    vm.widgetName = vm.widget.name;
-                    vm.widgetText = vm.widget.text;
-                    vm.widgetUrl = vm.widget.url;
-                    vm.widgetWidth = vm.widget.width;
-                }
+                vm.widgetType = vm.widget.type;
             });
 
         vm.updateWidget = updateWidget;
         vm.deleteWidget = deleteWidget;
 
-        function updateWidget() {
+        function updateWidget(widget) {
+            if(vm.widgetType === 'HTML' || vm.widgetType === 'YOUTUBE' || vm.widgetType === 'IMAGE' || vm.widgetType === 'TEXTINPUT') {
+                widget.size = 1;
+            }
+            if(vm.widgetType === 'HEADING' || vm.widgetType === 'HTML' || vm.widgetType === 'YOUTUBE' || vm.widgetType === 'IMAGE') {
+                widget.rows = 0;
+            }
             WidgetService
-                .findWidgetById(vm.wgid)
-                .then(function (widget) {
-                    vm.widget = widget;
-                });
-            var latestData = {
-                _id: vm.wgid,
-                name: vm.widgetName,
-                text: vm.widgetText,
-                widgetType: vm.widget.widgetType,
-                size: vm.widgetSize,
-                width: vm.widgetWidth,
-                url: vm.widgetUrl
-            };
-            WidgetService
-                .updateWidget(vm.wgid, latestData)
+                .updateWidget(vm.wgid, widget)
                 .then(function () {
                     $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page/" + vm.pid + "/widget");
                 });
@@ -168,6 +136,4 @@
         }
 
     }
-
-
 })();

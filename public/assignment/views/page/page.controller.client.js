@@ -1,104 +1,76 @@
-(function() {
+(function () {
     angular
         .module("WebAppMaker")
-        .controller("PageListController", PageListController)
-        .controller("NewPageController", NewPageController)
-        .controller("EditPageController", EditPageController);
+        .controller('PageListController', PageListController)
+        .controller('NewPageController', NewPageController)
+        .controller('EditPageController', EditPageController);
 
-    function PageListController($routeParams, PageService, WebsiteService) {
-        var model = this;
-        var uid = $routeParams.uid;
-        var wid = $routeParams.wid;
-        var pid = $routeParams.pid;
-
-        WebsiteService
-            .findWebsiteById(wid)
-            .then(renderWebsite);
-
-        function renderWebsite(website) {
-            model.website = website;
-        }
-
+    function PageListController($routeParams, PageService) {
+        var vm = this;
+        vm.uid = $routeParams.uid;
+        vm.wid = $routeParams.wid;
         PageService
-            .findPageByWebsiteId(wid)
-            .then(renderPage);
-
-        function renderPage(page) {
-            model.page = page;
-        }
+            .findPageByWebsiteId(vm.wid)
+            .then(function (pages) {
+                vm.pages = pages;
+            })
     }
 
-    function NewPageController($routeParams, PageService, WebsiteService) {
-        var model = this;
-        var uid = $routeParams.uid;
-        var wid = $routeParams.wid;
-        var pid = $routeParams.pid;
+    function NewPageController($routeParams, PageService, $location) {
+        var vm = this;
+        vm.uid = $routeParams.uid;
+        vm.wid = $routeParams.wid;
 
-        WebsiteService
-            .findWebsiteById(wid)
-            .then(renderWebsite);
-
-        function renderWebsite(website) {
-            model.website = website;
-        }
-
-        model.newPage = newPage;
+        PageService
+            .findPageByWebsiteId(vm.wid)
+            .then(function (pages) {
+                vm.pages = pages;
+            })
+        vm.newPage = newPage;
 
         function newPage(name, description) {
             var page = {
                 name: name,
-                description: description,
-                websiteId: $routeParams.wid
+                description: description
             };
             PageService
-                .createPage(page)
+                .createPage(vm.wid, page)
+                .then(function () {
+                    $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page");
+                })
         }
-
     }
 
-    function EditPageController($routeParams, PageService, WebsiteService) {
-        var model = this;
-        var uid = $routeParams.uid;
-        var wid = $routeParams.wid;
-        var pid = $routeParams.pid;
 
-        WebsiteService
-            .findWebsiteById(wid)
-            .then(renderWebsite);
+    function EditPageController($routeParams, PageService, $location) {
+        var vm = this;
+        vm.uid = $routeParams.uid;
+        vm.wid = $routeParams.wid;
+        vm.pid = $routeParams.pid;
 
-        function renderWebsite(website) {
-            model.website = website;
-        }
+        vm.updatePage = updatePage;
+        vm.removePage = removePage;
 
         PageService
-            .findPageById(pid)
-            .then(renderPage)
+            .findPageById(vm.pid)
+            .then(function (page) {
+                vm.page = page;
+            });
 
-        function renderPage(page) {
-            model.page = page;
+        function updatePage(page) {
+            PageService
+                .updatePage(vm.pid, page)
+                .then(function () {
+                    $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page");
+                })
         }
 
-        model.updatePage = updatePage;
-        model.removePage = removePage;
-
-        function updatePage(name, description) {
-            var page = {
-                _id: $routeParams.pid,
-                name: name,
-                description: description,
-                websiteId: $routeParams.wid
-            };
-
+        function removePage() {
             PageService
-                .updatePage(page._id, page)
-                .then(function() {
-                    model.message = "Page updated successfully!"
-                });
-        }
-        function removePage(pid) {
-            PageService
-                .deletePage(pid)
+                .removePage(vm.pid)
+                .then(function () {
+                    $location.url("/user/" + vm.uid + "/website/" + vm.wid + "/page");
+                })
         }
     }
-
 })();
