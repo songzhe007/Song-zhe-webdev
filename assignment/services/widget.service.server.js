@@ -140,12 +140,14 @@ module.exports = function(app, models) {
             .findWidgetById(widgetId)
             .then(function(w) {
                 var widget = w;
-                widget.url = '/assignment/uploads/'+filename;
+                widget.url = '/public/assignment/uploads/'+filename;
+                widget.width=width;
                 w.url = "/assignment/uploads/" + filename;
+                w.width=width;
                 w.save();
             });
 
-        var callbackUrl   = "/assignment/#!/user/" + userId + "/website/" + websiteId + "/page/" + pageId + "/widget/";
+        var callbackUrl   = "/#!/website/" + websiteId + "/page/" + pageId + "/widget/";
 
         res.redirect(callbackUrl);
     }
