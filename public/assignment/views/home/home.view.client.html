@@ -11,6 +11,7 @@
 <!-- Header -->
 <div class="container-fluid">
     <h1>Zhe Song's Assignment</h1>
+    <div ng-show="model.message" class="alert alert-success" role="alert">{{model.message}}</div>
     <a class="btn btn-primary " href="#!/login"
        ng-if="!model.currentUser">Login</a>
     <a class="btn btn-primary" href="#!/profile"

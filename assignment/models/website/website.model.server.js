@@ -8,7 +8,8 @@ module.exports = function(mongoose, userModel) {
         'findWebsiteById': findWebsiteById,
         'updateWebsite': updateWebsite,
         'deleteWebsite': deleteWebsite,
-        'insertPageToWebsite' : insertPageToWebsite
+        'insertPageToWebsite' : insertPageToWebsite,
+        'findWebsiteByGoogleId' : findWebsiteByGoogleId
     };
 
     return api;
@@ -58,5 +59,8 @@ module.exports = function(mongoose, userModel) {
         return websiteModel.remove({
             _id : websiteId
         });
+    }
+    function findWebsiteByGoogleId(googleId){
+        return userModel.findOne({'google.id' : googleId});
     }
 };
