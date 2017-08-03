@@ -16,7 +16,12 @@ module.exports = function(mongoose){
         dateCreated : {
             type : Date,
             default: Date.now
+        },
+        google: {
+            id: String,
+            token: String
         }
+
     }, {collection: 'user'});
 
     return userSchema;

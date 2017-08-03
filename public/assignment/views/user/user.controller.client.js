@@ -1,3 +1,4 @@
+
 (function() {
     angular
         .module("WebAppMaker")
@@ -11,14 +12,19 @@
 
         function login(username, password) {
             UserService
-                .findUserByCredentials(username, password)
-                .then(function (user) {
-                    if (user) {
-                        $location.url("/user/" + user._id);
-                    } else {
-                        vm.message = "Username does not exist.";
-                    }
-                });
+                // .findUserByCredentials(username, password)
+                .login(username, password)
+                .then(
+                    function (user) {
+                        if (user === null) {
+                            vm.error = "Password is not correct.";
+                        } else {
+                            $location.url("/profile");
+                        }
+                    },
+                    function (error) {
+                        vm.error = "Username does not exist.";
+                    });
         }
     }
 
@@ -27,19 +33,20 @@
         vm.register = register;
 
         function register(username, password, vpassword) {
-            if (username === undefined || username === null || username === "" || password === undefined || password === "") {
-                vm.message = "Username and Passwords cannot be empty.";
+            if (username === undefined || username === null || username === ""
+                || password === undefined || password === "") {
+                vm.error = "Username and Passwords cannot be empty.";
                 return;
             }
             if (password !== vpassword) {
-                vm.message = "Password does not match.";
+                vm.error = "Password does not match.";
                 return;
             }
             UserService
                 .findUserByUsername(username)
                 .then(function (user) {
                     if (user) {
-                        vm.message = "Username already exists.";
+                        vm.error = "Username already exists.";
                     }
                     else {
                         var NewUser = {
@@ -48,13 +55,13 @@
                             firstName: "",
                             lastName: "",
                             email: ""
-                        }
+                        };
 
                         UserService
-                            .createUser(NewUser)
-                            .then(function (newUser) {
-                                if (newUser) {
-                                    $location.url("/user/" + newUser._id);
+                            .register(NewUser)
+                            .then(function (newuser) {
+                                if (newuser) {
+                                    $location.url("/profile");
                                 }
                             });
                     }
@@ -62,17 +69,24 @@
         }
     }
 
-    function ProfileController($routeParams, $timeout, UserService, $location) {
+    function ProfileController(loggedin, $timeout, UserService, $location) {
         var vm = this;
-        UserService.findUserById($routeParams.uid)
-                   .then(renderUser);
+        vm.uid = loggedin._id;
+        vm.user = loggedin;
+
+        function init() {
+            renderUser(vm.user);
+        }
+
+        init();
 
         function renderUser (user) {
             vm.user = user;
         }
 
         vm.updateUser = updateUser;
-        vm.removeUser = removeUser;
+        vm.deleteUser = deleteUser;
+        vm.logout = logout;
 
         function updateUser(user) {
             UserService
@@ -89,13 +103,21 @@
             }, 3000);
         }
 
-        function removeUser(user) {
+        function deleteUser(user) {
             UserService
                 .deleteUser(user._id)
                 .then(function () {
                     $location.url("/login");
                 });
 
+        }
+
+        function logout() {
+            UserService
+                .logout()
+                .then(function () {
+                    $location.url('/');
+                });
         }
     }
 
