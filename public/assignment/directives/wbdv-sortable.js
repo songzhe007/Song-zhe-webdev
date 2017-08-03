@@ -1,16 +1,10 @@
-/**
- * Created by ChangLiu on 7/6/17.
- */
-/**
- * Created by ChangLiu on 7/14/17.
- */
 (function () {
     angular
         .module('DirectiveLecture', [])
-        .directive('wdDraggable', wdDraggable);
+        .directive('sortable', sortable);
 
 
-    function wdDraggable() {
+    function sortable() {
 
         function linkFunction(scope, element) {
             var initialIndex = -1;
