@@ -36,7 +36,8 @@ module.exports = function(app, models) {
         clientID: process.env.GOOGLE_CLIENT_ID || '866775234481-fuoakisihin0diulrpc1plv223kbnvvq.apps.googleusercontent.com'
         ,
         clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'XMLQzuojCaHinP-vFTxX5wfz',
-        callbackURL: process.env.GOOGLE_CALLBACK_URL || 'http://localhost:5000/auth/google/callback'
+        callbackURL: process.env.GOOGLE_CALLBACK_URL || 'https://webdev-summer-2017-zhesong.herokuapp.com/auth/google/callback'
+        || 'http://localhost:5000/auth/google/callback'
     };
 
     passport.use(new GoogleStrategy(googleConfig, googleStrategy));
